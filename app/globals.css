@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@import "@xseeduy/tokens/tailwind.css";
+@import "@xseeduy/tokens/shadcn.css";
+@source "../node_modules/@xseeduy/ui/dist";
+
+/* Bind dark: to the .dark class next-themes writes onto <html>, not OS media. */
+@custom-variant dark (&:where(.dark, .dark *));
