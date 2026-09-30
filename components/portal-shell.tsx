@@ -89,6 +89,7 @@ export function PortalShell({ children }: { children: React.ReactNode }) {
         announcement={{
           variant: "sun",
           action: { label: "Visit Roadmap" },
+          className: "p-[var(--space-2)]",
         }}
       >
         <BrandHeader />

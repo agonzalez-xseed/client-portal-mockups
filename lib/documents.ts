@@ -16,6 +16,30 @@ export const GENERAL_DOCUMENTS: DocumentRow[] = [
     size: "10.21 MB",
     sizeBytes: 10_210_000,
   },
+  {
+    id: "onboarding-guide",
+    name: "Onboarding Guide for New Team Members",
+    category: "Guide",
+    type: "PDF",
+    size: "3.47 MB",
+    sizeBytes: 3_470_000,
+  },
+  {
+    id: "security-policy-2026",
+    name: "Information Security Policy 2026",
+    category: "Policy",
+    type: "PDF",
+    size: "1.12 MB",
+    sizeBytes: 1_120_000,
+  },
+  {
+    id: "engagement-model",
+    name: "Xseed Engagement Model Overview",
+    category: "Overview",
+    type: "PDF",
+    size: "4.86 MB",
+    sizeBytes: 4_860_000,
+  },
 ];
 
 export const YOUR_DOCUMENTS: DocumentRow[] = [
