@@ -1,22 +1,28 @@
+import type { ReactNode } from "react";
+import { CloudIcon, CodeIcon, PaletteIcon } from "@xseeduy/icons/ssr";
+import { SubteamCard } from "@xseeduy/ui/main";
 import {
   AttritionCard,
   LocationCard,
   TeamGrowthCard,
   TenureCard,
 } from "@/components/dashboard/dashboard-cards";
-import { SubteamCard } from "@/components/dashboard/subteam-card";
-import { DocumentsTable } from "@/components/documents-table";
 import { SUBTEAMS } from "@/lib/dashboard";
-import { GENERAL_DOCUMENTS } from "@/lib/documents";
+
+const SUBTEAM_ICONS: Record<string, ReactNode> = {
+  frontend: <CodeIcon weight="duotone" />,
+  "backend-devops": <CloudIcon weight="duotone" />,
+  "design-qa": <PaletteIcon weight="duotone" />,
+};
 
 export default function DashboardPage() {
   return (
     <div className="flex flex-col gap-[var(--space-stack-md)]">
       <TeamGrowthCard />
-      <div className="grid grid-cols-1 gap-[var(--space-stack-md)] lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-[var(--space-stack-md)] lg:grid-cols-2">
         <TenureCard />
         <AttritionCard />
-        <LocationCard className="lg:col-span-2" />
+        <LocationCard frameClassName="lg:col-span-2" />
       </div>
       <section
         aria-labelledby="sub-teams-title"
@@ -29,17 +35,11 @@ export default function DashboardPage() {
           Sub Teams
         </h2>
         <div className="grid grid-cols-1 gap-[var(--space-stack-md)] lg:grid-cols-3">
-          {SUBTEAMS.map((team) => (
-            <SubteamCard key={team.id} {...team} />
+          {SUBTEAMS.map(({ id, ...team }) => (
+            <SubteamCard key={id} icon={SUBTEAM_ICONS[id]} {...team} />
           ))}
         </div>
       </section>
-      <DocumentsTable
-        title="Collaterals"
-        data={GENERAL_DOCUMENTS}
-        framed
-        className="pt-[var(--space-32)]"
-      />
     </div>
   );
 }

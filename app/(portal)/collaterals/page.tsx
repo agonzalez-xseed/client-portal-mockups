@@ -1,5 +1,9 @@
 import { DocumentsTable } from "@/components/documents-table";
-import { GENERAL_DOCUMENTS, YOUR_DOCUMENTS } from "@/lib/documents";
+import {
+  GENERAL_DOCUMENTS,
+  LEGAL_DOCUMENTS,
+  REPORT_DOCUMENTS,
+} from "@/lib/documents";
 
 export default function CollateralsPage() {
   return (
@@ -10,9 +14,16 @@ export default function CollateralsPage() {
         data={GENERAL_DOCUMENTS}
       />
       <DocumentsTable
-        title="Your Documents"
-        description="Documents assigned specifically to your account."
-        data={YOUR_DOCUMENTS}
+        title="Reports"
+        description="Reports prepared for your account."
+        data={REPORT_DOCUMENTS}
+        meta="date"
+      />
+      <DocumentsTable
+        title="Legal"
+        description="Contracts and legal documents for your account."
+        data={LEGAL_DOCUMENTS}
+        meta="date"
       />
     </div>
   );

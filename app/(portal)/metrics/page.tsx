@@ -1,7 +1,12 @@
+import { ChartLineUpIcon } from "@xseeduy/icons/ssr";
+import { DataState } from "@xseeduy/ui/base";
+
 export default function MetricsPage() {
   return (
-    <p className="text-body-md text-text-secondary">
-      Metrics mockup coming soon.
-    </p>
+    <DataState
+      title="Metrics mockup coming soon"
+      description="Delivery and performance metrics will live here."
+      media={<ChartLineUpIcon weight="duotone" aria-hidden />}
+    />
   );
 }

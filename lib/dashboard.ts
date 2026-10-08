@@ -1,4 +1,8 @@
-import type { TeamMapMember } from "@xseeduy/ui/main";
+import type {
+  SubteamCardProps,
+  SubteamPerson,
+  TeamMapMember,
+} from "@xseeduy/ui/main";
 
 export type HeadcountPoint = {
   /** ISO month, e.g. "2024-10". */
@@ -88,19 +92,8 @@ export const TEAM_MEMBERS: TeamMapMember[] = [
   { id: "m11", name: "Andrea Quispe", initials: "AQ", role: "Scrum Master", country: "Peru", countryCode: "PE", coordinates: [-77.04, -12.05], avatarSrc: portrait("women", 90) },
 ];
 
-export type SubteamPerson = {
+export type Subteam = Pick<SubteamCardProps, "name" | "manager" | "members"> & {
   id: string;
-  name: string;
-  role: string;
-  initials: string;
-  avatarSrc?: string;
-};
-
-export type Subteam = {
-  id: string;
-  name: string;
-  members: SubteamPerson[];
-  lead: SubteamPerson;
 };
 
 function membersById(ids: string[]): SubteamPerson[] {
@@ -122,18 +115,18 @@ export const SUBTEAMS: Subteam[] = [
     id: "frontend",
     name: "Frontend",
     members: membersById(["m1", "m9", "m7"]),
-    lead: { id: "l1", name: "Laura Méndez", role: "Engineering Manager", initials: "LM", avatarSrc: portrait("women", 50) },
+    manager: { id: "l1", name: "Laura Méndez", role: "Engineering Manager", initials: "LM", avatarSrc: portrait("women", 50) },
   },
   {
     id: "backend-devops",
     name: "Backend & DevOps",
     members: membersById(["m2", "m4", "m6", "m8"]),
-    lead: { id: "l2", name: "Patrick Majewski", role: "VP of Engineering", initials: "PM", avatarSrc: portrait("men", 11) },
+    manager: { id: "l2", name: "Patrick Majewski", role: "VP of Engineering", initials: "PM", avatarSrc: portrait("men", 11) },
   },
   {
     id: "design-qa",
     name: "Design & QA",
     members: membersById(["m5", "m3", "m11"]),
-    lead: { id: "l3", name: "Javier Ortiz", role: "Head of Product", initials: "JO", avatarSrc: portrait("men", 64) },
+    manager: { id: "l3", name: "Javier Ortiz", role: "Head of Product", initials: "JO", avatarSrc: portrait("men", 64) },
   },
 ];

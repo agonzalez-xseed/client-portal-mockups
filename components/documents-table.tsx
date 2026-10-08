@@ -8,18 +8,31 @@ import {
 import { DataTable, Table, type DataTableColumn } from "@xseeduy/ui/main";
 import { cn } from "@xseeduy/ui/utils";
 import type { DocumentRow } from "@/lib/documents";
-import {
-  FRAMED_PANEL,
-  SurfaceFrame,
-} from "@/components/dashboard/surface-frame";
-
 /**
  * Follows core-ui DataTable column patterns (see Data Table docs / stories):
  * accessor drives sort + search; cell only when display differs from the value.
  * Typography matches the Table specimen — primary for the lead field,
  * text-text-secondary for supporting fields.
  */
-const columns: DataTableColumn<DocumentRow>[] = [
+const categoryColumn: DataTableColumn<DocumentRow> = {
+  id: "category",
+  header: "Category",
+  accessor: (row) => row.category ?? "",
+  sortable: true,
+  cell: (row) => <span className="text-text-secondary">{row.category}</span>,
+};
+
+const dateColumn: DataTableColumn<DocumentRow> = {
+  id: "date",
+  header: "Date",
+  accessor: (row) => row.dateIso ?? "",
+  sortable: true,
+  cell: (row) => <span className="text-text-secondary">{row.date}</span>,
+};
+
+const buildColumns = (
+  meta: DataTableColumn<DocumentRow>,
+): DataTableColumn<DocumentRow>[] => [
   {
     id: "name",
     header: "Document",
@@ -36,15 +49,7 @@ const columns: DataTableColumn<DocumentRow>[] = [
       </span>
     ),
   },
-  {
-    id: "category",
-    header: "Category",
-    accessor: (row) => row.category,
-    sortable: true,
-    cell: (row) => (
-      <span className="text-text-secondary">{row.category}</span>
-    ),
-  },
+  meta,
   {
     id: "type",
     header: "Type",
@@ -94,52 +99,23 @@ const columns: DataTableColumn<DocumentRow>[] = [
   },
 ];
 
-/**
- * DataTable has no toolbar size prop and renders Columns / search at md.
- * Mirrors core-ui Button and Input size="sm" (the search input keeps its
- * leading-icon left padding, so only the right side changes).
- */
-const COMPACT_TOOLBAR = cn(
-  "[&_[data-slot=table-filters]_button]:h-[var(--control-sm)]",
-  "[&_[data-slot=table-filters]_button]:px-[var(--space-inset-sm)]",
-  "[&_[data-slot=table-search]>div]:h-[var(--control-sm)]",
-  "[&_[data-slot=table-search]_input]:pr-[var(--space-inset-sm)]",
-);
+const CATEGORY_COLUMNS = buildColumns(categoryColumn);
+const DATE_COLUMNS = buildColumns(dateColumn);
 
 export function DocumentsTable({
   title,
   description,
   data,
-  framed = false,
+  meta = "category",
   className,
 }: {
   title: string;
   description?: string;
   data: DocumentRow[];
-  /** Wraps the table in the dashboard SurfaceFrame; DataTable becomes the inset panel. */
-  framed?: boolean;
+  /** Second column: the document category, or its date (newest first). */
+  meta?: "category" | "date";
   className?: string;
 }) {
-  const table = (
-    <DataTable
-      data={data}
-      columns={columns}
-      getRowId={(row) => row.id}
-      searchPlaceholder="Search documents..."
-      defaultPageSize={10}
-      className={
-        framed
-          ? // Important: DataTable's own rounded-surface otherwise wins; bg overrides FRAMED_PANEL.
-            cn(
-              FRAMED_PANEL,
-              "rounded-[var(--radius-10)]! bg-surface-subtle!",
-              COMPACT_TOOLBAR,
-            )
-          : undefined
-      }
-    />
-  );
-
   return (
     <section
       className={cn(
@@ -147,18 +123,23 @@ export function DocumentsTable({
         className
       )}
     >
-      {/*
-        Titles stay outside DataTable — the component already owns the Table
-        shell (surface-subtle frame + bordered surface-default body). Title
-        weight matches Table.Title from @xseeduy/ui/main.
-      */}
+      {/* DataTable has no title slot; weight matches Table.Title. */}
       <div className="flex flex-col gap-[var(--space-stack-xs)]">
         <h2 className="text-body-xl-semibold text-text-primary">{title}</h2>
         {description && (
           <p className="text-body-md text-text-secondary">{description}</p>
         )}
       </div>
-      {framed ? <SurfaceFrame>{table}</SurfaceFrame> : table}
+      <DataTable
+        data={data}
+        columns={meta === "date" ? DATE_COLUMNS : CATEGORY_COLUMNS}
+        defaultSort={
+          meta === "date" ? { columnId: "date", direction: "desc" } : null
+        }
+        getRowId={(row) => row.id}
+        searchPlaceholder="Search documents..."
+        defaultPageSize={10}
+      />
     </section>
   );
 }

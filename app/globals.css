@@ -5,3 +5,27 @@
 
 /* Bind dark: to the .dark class next-themes writes onto <html>, not OS media. */
 @custom-variant dark (&:where(.dark, .dark *));
+
+@keyframes page-section-enter {
+  from {
+    opacity: 0;
+    transform: translateY(var(--space-8));
+  }
+}
+
+/* Staggered fade-up for each page's top-level sections; replays per route via a pathname key. */
+.page-enter > * > * {
+  animation: page-section-enter calc(var(--duration-slow) + var(--duration-fast))
+    var(--ease-standard) both;
+}
+.page-enter > * > :nth-child(2) { animation-delay: 60ms; }
+.page-enter > * > :nth-child(3) { animation-delay: 120ms; }
+.page-enter > * > :nth-child(4) { animation-delay: 180ms; }
+.page-enter > * > :nth-child(5) { animation-delay: 240ms; }
+.page-enter > * > :nth-child(n + 6) { animation-delay: 300ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .page-enter > * > * {
+    animation: none;
+  }
+}

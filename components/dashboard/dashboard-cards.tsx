@@ -31,8 +31,6 @@ import {
   TOTAL_MEMBERS,
 } from "@/lib/dashboard";
 import { CountryFlag } from "@/components/country-flag";
-import { FRAMED_PANEL, SurfaceFrame } from "./surface-frame";
-
 const MONTHS = [
   "Jan",
   "Feb",
@@ -87,46 +85,22 @@ const AXIS_PROPS = {
 function HeaderMetric({
   value,
   label,
-  className,
 }: {
   value: React.ReactNode;
   label: string;
-  className?: string;
 }) {
   return (
-    <div className="flex shrink-0 flex-col items-end">
-      <span
-        className={cn("text-body-xl-semibold text-text-primary", className)}
-      >
-        {value}
-      </span>
-      <span className="text-body-sm text-text-secondary">{label}</span>
+    <div className="flex h-[var(--control-sm)] shrink-0 items-center gap-[var(--space-inline-xs)] rounded-[var(--radius-6)] bg-surface-muted px-[var(--space-inline-sm)]">
+      <span className="text-body-md text-text-secondary">{label}:</span>
+      <span className="text-body-md-semibold text-text-primary">{value}</span>
     </div>
   );
 }
 
 const HEADER_ROW =
-  "flex-row items-start justify-between gap-[var(--space-inline-md)] pt-[var(--space-8)]";
+  "flex-row items-start justify-between gap-[var(--space-inline-md)] pt-[var(--space-8)] pr-[var(--space-8)]";
 
-const FRAMED_FOOTER = "border-t-0";
 const FOOTER_TEXT = "text-body-sm";
-
-function FramedCard({
-  className,
-  children,
-}: {
-  className?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <SurfaceFrame className={className}>
-      {/* Important: Card's rounded-surface otherwise wins over the panel radius. */}
-      <Card className={cn(FRAMED_PANEL, "flex-1 rounded-[var(--radius-10)]!")}>
-        {children}
-      </Card>
-    </SurfaceFrame>
-  );
-}
 
 export function TeamGrowthCard() {
   const [year, setYear] = useState<string>("all");
@@ -146,13 +120,13 @@ export function TeamGrowthCard() {
   const range = `${formatMonthLong(data[0].month)} – ${formatMonthLong(data[data.length - 1].month)}`;
 
   return (
-    <FramedCard>
+    <Card>
       <Card.Header className={HEADER_ROW}>
         <div className="flex min-w-0 flex-col gap-[var(--space-stack-xs)]">
           <Card.Title>Team Growth</Card.Title>
           <Card.Description>Cumulative headcount · {range}</Card.Description>
         </div>
-        <div className="flex shrink-0 items-start gap-[var(--space-inline-md)]">
+        <div className="flex shrink-0 items-start gap-[var(--space-6)]">
           <Select.Root
             items={YEAR_OPTIONS}
             value={year}
@@ -169,11 +143,7 @@ export function TeamGrowthCard() {
               ))}
             </Select.Popup>
           </Select.Root>
-          <HeaderMetric
-            value={ACTIVE_HEADCOUNT}
-            label="Active"
-            className="text-text-success"
-          />
+          <HeaderMetric value={ACTIVE_HEADCOUNT} label="Active" />
         </div>
       </Card.Header>
       <Card.Content className="pt-[var(--space-12)]">
@@ -219,18 +189,18 @@ export function TeamGrowthCard() {
           </LineChart>
         </ChartContainer>
       </Card.Content>
-      <Card.Footer className={FRAMED_FOOTER}>
+      <Card.Footer>
         <Card.Description className={FOOTER_TEXT}>
           Dashed line indicates current active headcount ({ACTIVE_HEADCOUNT}).
         </Card.Description>
       </Card.Footer>
-    </FramedCard>
+    </Card>
   );
 }
 
 export function TenureCard() {
   return (
-    <FramedCard>
+    <Card>
       <Card.Header className={HEADER_ROW}>
         <div className="flex min-w-0 flex-col gap-[var(--space-stack-xs)]">
           <Card.Title>Tenure Avg</Card.Title>
@@ -261,12 +231,12 @@ export function TenureCard() {
           </BarChart>
         </ChartContainer>
       </Card.Content>
-      <Card.Footer className={FRAMED_FOOTER}>
+      <Card.Footer>
         <Card.Description className={FOOTER_TEXT}>
           Across {TOTAL_MEMBERS} members (active + inactive)
         </Card.Description>
       </Card.Footer>
-    </FramedCard>
+    </Card>
   );
 }
 
@@ -276,15 +246,15 @@ export function AttritionCard() {
   const last = DEPARTURES[DEPARTURES.length - 1].month;
 
   return (
-    <FramedCard>
+    <Card>
       <Card.Header className={HEADER_ROW}>
         <div className="flex min-w-0 flex-col gap-[var(--space-stack-xs)]">
           <Card.Title>Attrition</Card.Title>
           <Card.Description>Monthly departures over time</Card.Description>
         </div>
         <HeaderMetric
-          value={total}
-          label={`${Math.round(ATTRITION_RATE * 100)}% attrition`}
+          value={`${total} (${Math.round(ATTRITION_RATE * 100)}%)`}
+          label="Attrition"
         />
       </Card.Header>
       <Card.Content className="flex-1 pt-[var(--space-12)]">
@@ -313,16 +283,20 @@ export function AttritionCard() {
           </BarChart>
         </ChartContainer>
       </Card.Content>
-      <Card.Footer className={FRAMED_FOOTER}>
+      <Card.Footer>
         <Card.Description className={FOOTER_TEXT}>
           Monthly departures · {first} – {last}
         </Card.Description>
       </Card.Footer>
-    </FramedCard>
+    </Card>
   );
 }
 
-export function LocationCard({ className }: { className?: string }) {
+export function LocationCard({
+  frameClassName,
+}: {
+  frameClassName?: string;
+}) {
   const byCountry = useMemo(() => {
     const counts = new Map<string, { code?: string; count: number }>();
     for (const member of TEAM_MEMBERS) {
@@ -340,7 +314,7 @@ export function LocationCard({ className }: { className?: string }) {
   }, []);
 
   return (
-    <FramedCard className={className}>
+    <Card frameClassName={frameClassName}>
       <Card.Header className={HEADER_ROW}>
         <div className="flex min-w-0 flex-col gap-[var(--space-stack-xs)]">
           <Card.Title>Location</Card.Title>
@@ -351,15 +325,9 @@ export function LocationCard({ className }: { className?: string }) {
         <HeaderMetric value={byCountry.length} label="Countries" />
       </Card.Header>
       <Card.Content className="flex flex-1 flex-col p-0">
-        {/* Absolute fill: the map follows the row height instead of setting it. */}
-        <div className="relative min-h-[15rem] flex-1">
-          <TeamMap
-            members={TEAM_MEMBERS}
-            className="absolute inset-0 h-full border-0"
-          />
-        </div>
+        <TeamMap members={TEAM_MEMBERS} className="border-0" />
       </Card.Content>
-      <Card.Footer className={FRAMED_FOOTER}>
+      <Card.Footer>
         <Card.Description
           className={cn(
             FOOTER_TEXT,
@@ -378,6 +346,6 @@ export function LocationCard({ className }: { className?: string }) {
           ))}
         </Card.Description>
       </Card.Footer>
-    </FramedCard>
+    </Card>
   );
 }

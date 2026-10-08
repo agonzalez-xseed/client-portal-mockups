@@ -15,8 +15,8 @@ importers:
         specifier: ^2.5.0
         version: 2.5.0
       '@xseeduy/ui':
-        specifier: ^1.21.0
-        version: 1.21.0(@types/react@19.3.0)(prop-types@15.8.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(recharts@3.8.0(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react-is@16.13.1)(react@19.2.8)(redux@5.0.1))
+        specifier: ^1.29.0
+        version: 1.29.0(@types/react@19.3.0)(prop-types@15.8.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(recharts@3.8.0(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react-is@16.13.1)(react@19.2.8)(redux@5.0.1))
       country-flag-icons:
         specifier: ^1.6.20
         version: 1.6.20
@@ -905,8 +905,8 @@ packages:
   '@xseeduy/tokens@2.5.0':
     resolution: {integrity: sha512-zHd+zmA3pqRpki2XqTemTBsDU0HGW48GjCWCwwxoRDat0RccGtG4I5LFBsB8TiAJdCIHFQX+jEm+k65ufdcoxQ==, tarball: https://npm.pkg.github.com/download/@xseeduy/tokens/2.5.0/6df678aa9cd1b3901533934c3a9dec2ad816c8ce}
 
-  '@xseeduy/ui@1.21.0':
-    resolution: {integrity: sha512-0g2nW6h6Ng0w62l0T3Q6v5MOpydwCYrqBVw+60mIPMXydz7CP69sYvo/Bp8MVvZISUcHOiKX6absCTkkDHM+ZA==, tarball: https://npm.pkg.github.com/download/@xseeduy/ui/1.21.0/a563447ff7327fcac630a98cfcec99f6aa1f10d7}
+  '@xseeduy/ui@1.29.0':
+    resolution: {integrity: sha512-Mh6flKWlSLOZfTLIkLqwRs6DMGuInsi3AJiib3samd+CKuIi3gYN0PXSL9o5GFUEABHprYilnyqftGO/Wq0F/A==, tarball: https://npm.pkg.github.com/download/@xseeduy/ui/1.29.0/95b6add21ad304e69baa6c12f2151b042f6515c4}
     peerDependencies:
       react: '>=18'
       react-dom: '>=18'
@@ -3125,7 +3125,7 @@ snapshots:
 
   '@xseeduy/tokens@2.5.0': {}
 
-  '@xseeduy/ui@1.21.0(@types/react@19.3.0)(prop-types@15.8.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(recharts@3.8.0(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react-is@16.13.1)(react@19.2.8)(redux@5.0.1))':
+  '@xseeduy/ui@1.29.0(@types/react@19.3.0)(prop-types@15.8.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(recharts@3.8.0(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react-is@16.13.1)(react@19.2.8)(redux@5.0.1))':
     dependencies:
       '@base-ui/react': 1.8.0(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@dnd-kit/helpers': 0.5.0
