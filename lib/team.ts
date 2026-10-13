@@ -150,8 +150,8 @@ export function formatPtoRange({ startIso, endIso }: PtoRecord) {
   return `${start.monthDay}, ${start.year} – ${end.monthDay}, ${end.year}`;
 }
 
-/** Fixed standard-time UTC offsets; daylight saving is not applied. */
-export const USER_TIMEZONES = { EST: -5, CST: -6, PST: -8 } as const;
+/** Fixed standard-time UTC offsets; daylight saving is not applied. EU is Central European Time. */
+export const USER_TIMEZONES = { PST: -8, MST: -7, CST: -6, EST: -5, EU: 1 } as const;
 
 export type UserTimezone = keyof typeof USER_TIMEZONES;
 
