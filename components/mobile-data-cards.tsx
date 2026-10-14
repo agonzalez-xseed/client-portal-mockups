@@ -2,13 +2,31 @@
 
 import { useMemo, useState, type ReactNode } from "react";
 import { MagnifyingGlassIcon, MagnifyingGlassMinusIcon } from "@xseeduy/icons";
-import { Input } from "@xseeduy/ui/base";
+import { Input, SurfaceFrame, SurfaceFramePanel } from "@xseeduy/ui/base";
 import {
   Pagination,
   type DataTableColumn,
   type DataTableSort,
 } from "@xseeduy/ui/main";
 import { cn } from "@xseeduy/ui/utils";
+
+/**
+ * `DataTableColumn` plus mobile-only options. Pass the same columns to
+ * `DataTable` (desktop) and `MobileDataCards` (mobile).
+ */
+export type MobileDataTableColumn<T> = DataTableColumn<T> & {
+  /** Leave this field out of the mobile cards. The column still feeds search and sort. */
+  hideOnMobile?: boolean;
+  /** Mobile-only column (e.g. a card's "View" button). Drop it with `desktopColumns`. */
+  hideOnDesktop?: boolean;
+};
+
+/** The columns to hand to the desktop `DataTable`. */
+export function desktopColumns<T>(
+  columns: MobileDataTableColumn<T>[],
+): DataTableColumn<T>[] {
+  return columns.filter((column) => !column.hideOnDesktop);
+}
 
 /** Cell markup is built for a table cell. Let it wrap inside the card width. */
 const CELL_WRAP =
@@ -76,7 +94,7 @@ export function MobileDataCards<T>({
   empty,
 }: {
   data: T[];
-  columns: DataTableColumn<T>[];
+  columns: MobileDataTableColumn<T>[];
   getRowId: (row: T) => string;
   searchPlaceholder?: string;
   searchable?: boolean;
@@ -90,8 +108,9 @@ export function MobileDataCards<T>({
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
 
-  const fields = columns.filter((column) => !isActionColumn(column));
-  const actions = columns.filter(isActionColumn);
+  const visible = columns.filter((column) => !column.hideOnMobile);
+  const fields = visible.filter((column) => !isActionColumn(column));
+  const actions = visible.filter(isActionColumn);
   const showSearch = searchable && data.length > 3;
 
   const filtered = useMemo(() => {
@@ -132,14 +151,8 @@ export function MobileDataCards<T>({
     </div>
   );
 
-  return (
-    <div
-      className={cn(
-        "md:hidden",
-        framed &&
-          "overflow-hidden rounded-[var(--radius-10)] border border-border-subtle bg-surface-default",
-      )}
-    >
+  const content = (
+    <>
       {showSearch && (
         <div className="border-b border-border-subtle p-[var(--space-inset-sm)]">
           <Input
@@ -198,6 +211,18 @@ export function MobileDataCards<T>({
           </Pagination.Content>
         </Pagination>
       )}
+    </>
+  );
+
+  // Same outer frame + inner panel as core-ui's Table on desktop.
+  return framed ? (
+    <SurfaceFrame className="md:hidden">
+      <SurfaceFramePanel>{content}</SurfaceFramePanel>
+    </SurfaceFrame>
+  ) : (
+    // Inside another frame: a single default-surface panel, like SurfaceFramePanel.
+    <div className="overflow-hidden rounded-[var(--radius-10)] border border-border-subtle bg-surface-default md:hidden">
+      {content}
     </div>
   );
 }

@@ -8,7 +8,7 @@ import {
   UsersThreeIcon,
 } from "@xseeduy/icons/ssr";
 import { Avatar, Button } from "@xseeduy/ui/base";
-import { MetricCard } from "@xseeduy/ui/main";
+import { MetricCard } from "@/components/metric-card";
 import { CountryFlag } from "@/components/country-flag";
 import {
   MemberDocuments,

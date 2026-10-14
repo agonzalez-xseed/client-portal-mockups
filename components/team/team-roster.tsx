@@ -2,17 +2,20 @@
 
 import Link from "next/link";
 import { useMemo } from "react";
-import { SquaresFourIcon, TableIcon } from "@xseeduy/icons";
-import { Avatar, Badge } from "@xseeduy/ui/base";
+import { ArrowRightIcon, SquaresFourIcon, TableIcon } from "@xseeduy/icons";
+import { Avatar, Badge, Button } from "@xseeduy/ui/base";
 import {
   DataTable,
   STATUS_TONE,
   Tabs,
   TeamMemberCard,
-  type DataTableColumn,
 } from "@xseeduy/ui/main";
 import { CountryFlag } from "@/components/country-flag";
-import { MobileDataCards } from "@/components/mobile-data-cards";
+import {
+  MobileDataCards,
+  desktopColumns,
+  type MobileDataTableColumn,
+} from "@/components/mobile-data-cards";
 import {
   formatRate,
   formatTimeShift,
@@ -24,7 +27,7 @@ import { useUserTimezone } from "@/lib/user-timezone";
 
 const buildColumns = (
   zone: UserTimezone,
-): DataTableColumn<TeamRosterMember>[] => [
+): MobileDataTableColumn<TeamRosterMember>[] => [
   {
     id: "member",
     header: "Member",
@@ -55,6 +58,7 @@ const buildColumns = (
     header: "Country",
     accessor: (row) => row.country,
     sortable: true,
+    hideOnMobile: true,
     cell: (row) => (
       <span className="inline-flex items-center gap-[var(--space-inline-sm)] text-text-secondary">
         <CountryFlag code={row.countryCode} />
@@ -67,6 +71,7 @@ const buildColumns = (
     header: "Contract",
     accessor: (row) => row.contract,
     sortable: true,
+    hideOnMobile: true,
     cell: (row) => (
       <Badge tone={STATUS_TONE[row.contract]} variant="subtle">
         {row.contract}
@@ -78,6 +83,7 @@ const buildColumns = (
     header: "Since",
     accessor: (row) => row.sinceIso,
     sortable: true,
+    hideOnMobile: true,
     cell: (row) => <span className="text-text-secondary">{row.since}</span>,
   },
   {
@@ -95,8 +101,29 @@ const buildColumns = (
     accessor: (row) => row.rate,
     sortable: true,
     align: "end",
+    hideOnMobile: true,
     cell: (row) => (
       <span className="text-text-secondary">{formatRate(row.rate)}</span>
+    ),
+  },
+  {
+    id: "view",
+    header: "View",
+    fitContent: true,
+    hideable: false,
+    searchable: false,
+    hideOnDesktop: true,
+    cell: (row) => (
+      <Button
+        tone="tertiary"
+        size="sm"
+        className="w-full"
+        render={<Link href={`/team/${row.id}`} />}
+        nativeButton={false}
+      >
+        View
+        <ArrowRightIcon />
+      </Button>
     ),
   },
 ];
@@ -104,6 +131,7 @@ const buildColumns = (
 export function TeamRoster({ members }: { members: TeamRosterMember[] }) {
   const { zone } = useUserTimezone();
   const columns = useMemo(() => buildColumns(zone), [zone]);
+  const tableColumns = useMemo(() => desktopColumns(columns), [columns]);
 
   return (
     <Tabs defaultValue="table" size="sm" className="pt-[var(--space-32)]">
@@ -128,7 +156,7 @@ export function TeamRoster({ members }: { members: TeamRosterMember[] }) {
         <div className="hidden md:block">
           <DataTable
             data={members}
-            columns={columns}
+            columns={tableColumns}
             getRowId={(row) => row.id}
             searchPlaceholder="Search team..."
             defaultPageSize={10}

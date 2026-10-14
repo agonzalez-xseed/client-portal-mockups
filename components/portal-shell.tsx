@@ -13,7 +13,6 @@ import { Avatar, type UiMode } from "@xseeduy/ui/base";
 import {
   MenuBar,
   PageHeader,
-  PageHeaderPerson,
   PageHeaderTitle,
   useMenuBar,
   type PageHeaderPersonProps,
@@ -21,6 +20,7 @@ import {
 import { USER_TIMEZONES, type UserTimezone } from "@/lib/team";
 import { UserTimezoneProvider, useUserTimezone } from "@/lib/user-timezone";
 import { BottomNav } from "./bottom-nav";
+import { PageHeaderPerson } from "./page-header-person";
 import {
   PORTAL_ANNOUNCEMENT,
   PORTAL_NAV,

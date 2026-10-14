@@ -141,7 +141,11 @@ const REPORTS_TO_COLUMNS: DataTableColumn<ReportsToRecord>[] = [
 ];
 
 /** Flattens DataTable's own frame so the surrounding RecordSection frame is the only one. */
-const FLAT_FRAME = "rounded-none border-0 bg-transparent p-0";/** Local copy of core-ui's SurfaceEyebrow (not exported), as used by SubteamCard. */
+const FLAT_FRAME = "rounded-none border-0 bg-transparent p-0";
+/** One dark panel holding the table, so the dotted frame is its only container. */
+const TABLE_PANEL =
+  "bg-surface-default p-0 [&_[data-slot=table-body]]:rounded-none [&_[data-slot=table-body]]:border-0 [&_[data-slot=table-body]]:bg-transparent";
+/** Local copy of core-ui's SurfaceEyebrow (not exported), as used by SubteamCard. */
 function RecordSection({
   title,
   icon,
@@ -203,6 +207,7 @@ export function MemberReportsTo({
           paginated={false}
           columnsMenu={false}
           frameClassName={FLAT_FRAME}
+          className={TABLE_PANEL}
         />
       </div>
     </RecordSection>
@@ -247,6 +252,7 @@ export function MemberDocuments({
           paginated={false}
           columnsMenu={false}
           frameClassName={FLAT_FRAME}
+          className={TABLE_PANEL}
           empty={<DataState size="sm" title="No documents on file." />}
         />
       </div>
@@ -275,6 +281,7 @@ export function MemberPto({ records }: { records: PtoRecord[] }) {
           paginated={false}
           columnsMenu={false}
           frameClassName={FLAT_FRAME}
+          className={TABLE_PANEL}
           empty={<DataState size="sm" title="No time off taken yet." />}
         />
       </div>

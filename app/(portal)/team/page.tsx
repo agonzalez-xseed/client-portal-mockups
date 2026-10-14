@@ -1,5 +1,5 @@
 import { BriefcaseIcon, HourglassMediumIcon, UsersIcon } from "@xseeduy/icons/ssr";
-import { MetricCard } from "@xseeduy/ui/main";
+import { MetricCard } from "@/components/metric-card";
 import { TeamRoster } from "@/components/team/team-roster";
 import { TEAM_ROSTER } from "@/lib/team";
 
