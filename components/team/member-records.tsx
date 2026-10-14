@@ -2,8 +2,6 @@
 
 import {
   AirplaneTiltIcon,
-  DownloadSimpleIcon,
-  EyeIcon,
   FilePdfIcon,
   FilesIcon,
   UserCircleIcon,
@@ -12,18 +10,19 @@ import {
   Avatar,
   Badge,
   DataState,
+  EYEBROW_TEXT,
+  SurfaceEyebrow,
   SurfaceFrame,
   type BadgeProps,
 } from "@xseeduy/ui/base";
 import {
   DataTable,
-  Table,
   TeamMap,
   type DataTableColumn,
   type TeamMapMember,
   type SubteamPerson,
 } from "@xseeduy/ui/main";
-import { SUBTLE_DOTS } from "@xseeduy/ui/utils";
+import { DocumentRowActions } from "@/components/document-row-actions";
 import { formatPtoRange, type PtoRecord, type PtoStatus } from "@/lib/team";
 
 type DocumentRecord = { id: string; document: string; type: string; uploaded: string };
@@ -64,31 +63,7 @@ const DOCUMENT_COLUMNS: DataTableColumn<DocumentRecord>[] = [
     fitContent: true,
     hideable: false,
     searchable: false,
-    cell: (row) => (
-      <Table.RowActions
-        onClick={(event) => event.stopPropagation()}
-        onKeyDown={(event) => event.stopPropagation()}
-      >
-        <Table.RowAction
-          tone="tertiary"
-          aria-label={`View ${row.document}`}
-          onClick={(event) => {
-            event.preventDefault();
-          }}
-        >
-          <EyeIcon weight="duotone" aria-hidden />
-        </Table.RowAction>
-        <Table.RowAction
-          tone="tertiary"
-          aria-label={`Download ${row.document}`}
-          onClick={(event) => {
-            event.preventDefault();
-          }}
-        >
-          <DownloadSimpleIcon weight="duotone" aria-hidden />
-        </Table.RowAction>
-      </Table.RowActions>
-    ),
+    cell: (row) => <DocumentRowActions name={row.document} />,
   },
 ];
 
@@ -165,8 +140,7 @@ const REPORTS_TO_COLUMNS: DataTableColumn<ReportsToRecord>[] = [
   },
 ];
 
-/** Flattens DataTable's own frame so the surrounding RecordSection frame is the only one. */
-const FLAT_FRAME = "rounded-none border-0 bg-transparent p-0";/** Local copy of core-ui's SurfaceEyebrow (not exported), as used by SubteamCard. */
+/** Dotted frame with an eyebrow title, as SubteamCard. Holds one embedded DataTable. */
 function RecordSection({
   title,
   icon,
@@ -177,18 +151,10 @@ function RecordSection({
   children: React.ReactNode;
 }) {
   return (
-    <SurfaceFrame className={`gap-[var(--space-6)] ${SUBTLE_DOTS}`}>
-      <div className="flex items-center gap-[var(--space-inline-sm)] px-[var(--space-6)] pt-[var(--space-4)]">
-        <span
-          aria-hidden
-          className="flex size-[var(--icon-sm)] shrink-0 items-center justify-center text-text-secondary [&_svg]:size-full"
-        >
-          {icon}
-        </span>
-        <h2 className="min-w-0 truncate text-body-md text-text-secondary">
-          {title}
-        </h2>
-      </div>
+    <SurfaceFrame texture="dots" className="gap-[var(--space-6)]">
+      <SurfaceEyebrow icon={icon} iconClassName="text-text-secondary">
+        <h2 className={EYEBROW_TEXT}>{title}</h2>
+      </SurfaceEyebrow>
       {children}
     </SurfaceFrame>
   );
@@ -218,7 +184,7 @@ export function MemberReportsTo({
         searchable={false}
         paginated={false}
         columnsMenu={false}
-        frameClassName={FLAT_FRAME}
+        variant="embedded"
       />
     </RecordSection>
   );
@@ -251,7 +217,7 @@ export function MemberDocuments({
         searchable={false}
         paginated={false}
         columnsMenu={false}
-        frameClassName={FLAT_FRAME}
+        variant="embedded"
         empty={<DataState size="sm" title="No documents on file." />}
       />
     </RecordSection>
@@ -268,7 +234,7 @@ export function MemberPto({ records }: { records: PtoRecord[] }) {
         searchable={false}
         paginated={false}
         columnsMenu={false}
-        frameClassName={FLAT_FRAME}
+        variant="embedded"
         empty={<DataState size="sm" title="No time off taken yet." />}
       />
     </RecordSection>

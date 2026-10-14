@@ -11,15 +11,22 @@ import {
 import { useTheme } from "next-themes";
 import { Avatar, type UiMode } from "@xseeduy/ui/base";
 import {
+  BottomNav,
   MenuBar,
   PageHeader,
   PageHeaderPerson,
   PageHeaderTitle,
   useMenuBar,
 } from "@xseeduy/ui/main";
+import { BOTTOM_NAV_CLEARANCE, cn } from "@xseeduy/ui/utils";
 import { USER_TIMEZONES, type UserTimezone } from "@/lib/team";
 import { UserTimezoneProvider, useUserTimezone } from "@/lib/user-timezone";
-import { PORTAL_NAV, titleForPath } from "./portal-nav";
+import {
+  PORTAL_ANNOUNCEMENT,
+  PORTAL_NAV,
+  isNavActive,
+  titleForPath,
+} from "./portal-nav";
 
 const PORTAL_USER = {
   name: "Alex Stone",
@@ -100,26 +107,23 @@ export function PortalShell({ children }: { children: React.ReactNode }) {
     <UserTimezoneProvider>
       <div className="flex h-full min-h-0">
         <MenuBar
-          className="shrink-0"
-          announcement={{
-            variant: "sun",
-            action: false,
-          }}
+          className="shrink-0 max-md:hidden"
+          announcement={
+            PORTAL_ANNOUNCEMENT ? { ...PORTAL_ANNOUNCEMENT, action: false } : false
+          }
         >
           <BrandHeader />
           <MenuBar.Content>
             <MenuBar.Group>
               {PORTAL_NAV.map((item) => {
                 const Icon = NAV_ICONS[item.icon];
-                const active =
-                  pathname === item.href || pathname.startsWith(`${item.href}/`);
 
                 return (
                   <MenuBar.Item
                     key={item.href}
                     render={<Link href={item.href} />}
                     icon={<Icon weight="duotone" />}
-                    active={active}
+                    active={isNavActive(pathname, item.href)}
                   >
                     {item.label}
                   </MenuBar.Item>
@@ -136,12 +140,34 @@ export function PortalShell({ children }: { children: React.ReactNode }) {
           </PageHeader>
           <div
             key={pathname}
-            className="page-enter min-h-0 flex-1 overflow-y-auto bg-surface-page p-[var(--space-inset-xl)]"
+            className={cn(
+              "page-enter min-h-0 flex-1 overflow-y-auto bg-surface-page p-[var(--space-inset-xl)]",
+              BOTTOM_NAV_CLEARANCE,
+            )}
           >
             {children}
           </div>
         </div>
       </div>
+
+      <BottomNav aria-label="Primary" className="md:hidden">
+        {PORTAL_NAV.map((item) => {
+          const Icon = NAV_ICONS[item.icon];
+          const active = isNavActive(pathname, item.href);
+
+          return (
+            <BottomNav.Item
+              key={item.href}
+              render={<Link href={item.href} />}
+              icon={<Icon weight={active ? "fill" : "duotone"} />}
+              active={active}
+              tone={item.tone}
+            >
+              {item.label}
+            </BottomNav.Item>
+          );
+        })}
+      </BottomNav>
     </UserTimezoneProvider>
   );
 }

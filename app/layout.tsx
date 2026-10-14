@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
 import { IconProvider } from "@xseeduy/icons";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -13,6 +13,11 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Xseed Client Portal",
   description: "Client portal mockups for Xseed",
+};
+
+/** `cover` lets the mobile bottom nav pad itself clear of the iOS home indicator. */
+export const viewport: Viewport = {
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

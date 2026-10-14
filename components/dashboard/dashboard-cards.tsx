@@ -11,7 +11,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Select } from "@xseeduy/ui/base";
+import { CountryFlag, Select } from "@xseeduy/ui/base";
 import {
   ChartContainer,
   ChartTooltip,
@@ -30,7 +30,7 @@ import {
   TENURE_BUCKETS,
   TOTAL_MEMBERS,
 } from "@/lib/dashboard";
-import { CountryFlag } from "@/components/country-flag";
+
 const MONTHS = [
   "Jan",
   "Feb",
@@ -81,22 +81,6 @@ const AXIS_PROPS = {
   tickMargin: 8,
 } as const;
 
-/** core-ui Card has no headline-metric slot; plain markup on DS type tokens. */
-function HeaderMetric({
-  value,
-  label,
-}: {
-  value: React.ReactNode;
-  label: string;
-}) {
-  return (
-    <div className="flex h-[var(--control-sm)] shrink-0 items-center gap-[var(--space-inline-xs)] rounded-[var(--radius-6)] bg-surface-muted px-[var(--space-inline-sm)]">
-      <span className="text-body-md text-text-secondary">{label}:</span>
-      <span className="text-body-md-semibold text-text-primary">{value}</span>
-    </div>
-  );
-}
-
 const HEADER_ROW =
   "flex-row items-start justify-between gap-[var(--space-inline-md)] pt-[var(--space-8)] pr-[var(--space-8)]";
 
@@ -124,7 +108,9 @@ export function TeamGrowthCard() {
       <Card.Header className={HEADER_ROW}>
         <div className="flex min-w-0 flex-col gap-[var(--space-stack-xs)]">
           <Card.Title>Team Growth</Card.Title>
-          <Card.Description>Cumulative headcount · {range}</Card.Description>
+          <Card.Description hideOnMobile>
+            Cumulative headcount · {range}
+          </Card.Description>
         </div>
         <div className="flex shrink-0 items-start gap-[var(--space-6)]">
           <Select.Root
@@ -143,7 +129,7 @@ export function TeamGrowthCard() {
               ))}
             </Select.Popup>
           </Select.Root>
-          <HeaderMetric value={ACTIVE_HEADCOUNT} label="Active" />
+          <Card.Metric value={ACTIVE_HEADCOUNT} label="Active" />
         </div>
       </Card.Header>
       <Card.Content className="pt-[var(--space-12)]">
@@ -204,11 +190,11 @@ export function TenureCard() {
       <Card.Header className={HEADER_ROW}>
         <div className="flex min-w-0 flex-col gap-[var(--space-stack-xs)]">
           <Card.Title>Tenure Avg</Card.Title>
-          <Card.Description>
+          <Card.Description hideOnMobile>
             Distribution of months on the team
           </Card.Description>
         </div>
-        <HeaderMetric value={`${TENURE_AVG_MONTHS} mo`} label="Avg tenure" />
+        <Card.Metric value={`${TENURE_AVG_MONTHS} mo`} label="Avg tenure" />
       </Card.Header>
       <Card.Content className="flex-1 pt-[var(--space-12)]">
         <ChartContainer
@@ -250,9 +236,11 @@ export function AttritionCard() {
       <Card.Header className={HEADER_ROW}>
         <div className="flex min-w-0 flex-col gap-[var(--space-stack-xs)]">
           <Card.Title>Attrition</Card.Title>
-          <Card.Description>Monthly departures over time</Card.Description>
+          <Card.Description hideOnMobile>
+            Monthly departures over time
+          </Card.Description>
         </div>
-        <HeaderMetric
+        <Card.Metric
           value={`${total} (${Math.round(ATTRITION_RATE * 100)}%)`}
           label="Attrition"
         />
@@ -322,7 +310,7 @@ export function LocationCard({
             {TEAM_MEMBERS.length} members across {byCountry.length} countries
           </Card.Description>
         </div>
-        <HeaderMetric value={byCountry.length} label="Countries" />
+        <Card.Metric value={byCountry.length} label="Countries" />
       </Card.Header>
       <Card.Content className="flex flex-1 flex-col p-0">
         <TeamMap members={TEAM_MEMBERS} className="border-0" />

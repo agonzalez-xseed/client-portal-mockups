@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { useMemo } from "react";
-import { SquaresFourIcon, TableIcon } from "@xseeduy/icons";
-import { Avatar, Badge } from "@xseeduy/ui/base";
+import { ArrowRightIcon, SquaresFourIcon, TableIcon } from "@xseeduy/icons";
+import { Avatar, Badge, Button, CountryFlag } from "@xseeduy/ui/base";
 import {
   DataTable,
   STATUS_TONE,
@@ -11,7 +11,6 @@ import {
   TeamMemberCard,
   type DataTableColumn,
 } from "@xseeduy/ui/main";
-import { CountryFlag } from "@/components/country-flag";
 import {
   formatRate,
   formatTimeShift,
@@ -54,6 +53,7 @@ const buildColumns = (
     header: "Country",
     accessor: (row) => row.country,
     sortable: true,
+    hideOnMobile: true,
     cell: (row) => (
       <span className="inline-flex items-center gap-[var(--space-inline-sm)] text-text-secondary">
         <CountryFlag code={row.countryCode} />
@@ -66,6 +66,7 @@ const buildColumns = (
     header: "Contract",
     accessor: (row) => row.contract,
     sortable: true,
+    hideOnMobile: true,
     cell: (row) => (
       <Badge tone={STATUS_TONE[row.contract]} variant="subtle">
         {row.contract}
@@ -77,6 +78,7 @@ const buildColumns = (
     header: "Since",
     accessor: (row) => row.sinceIso,
     sortable: true,
+    hideOnMobile: true,
     cell: (row) => <span className="text-text-secondary">{row.since}</span>,
   },
   {
@@ -94,8 +96,29 @@ const buildColumns = (
     accessor: (row) => row.rate,
     sortable: true,
     align: "end",
+    hideOnMobile: true,
     cell: (row) => (
       <span className="text-text-secondary">{formatRate(row.rate)}</span>
+    ),
+  },
+  {
+    id: "view",
+    header: "View",
+    fitContent: true,
+    hideable: false,
+    searchable: false,
+    hideOnDesktop: true,
+    cell: (row) => (
+      <Button
+        tone="tertiary"
+        size="sm"
+        className="w-full"
+        render={<Link href={`/team/${row.id}`} />}
+        nativeButton={false}
+      >
+        View
+        <ArrowRightIcon />
+      </Button>
     ),
   },
 ];
@@ -124,6 +147,7 @@ export function TeamRoster({ members }: { members: TeamRosterMember[] }) {
           getRowId={(row) => row.id}
           searchPlaceholder="Search team..."
           defaultPageSize={10}
+          className="max-md:overflow-hidden"
         />
       </Tabs.Content>
       <Tabs.Content value="grid">
