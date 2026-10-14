@@ -102,6 +102,8 @@ const HEADER_ROW =
 
 const FOOTER_TEXT = "text-body-sm";
 
+const CHART_DESCRIPTION = "max-md:hidden";
+
 export function TeamGrowthCard() {
   const [year, setYear] = useState<string>("all");
 
@@ -124,7 +126,9 @@ export function TeamGrowthCard() {
       <Card.Header className={HEADER_ROW}>
         <div className="flex min-w-0 flex-col gap-[var(--space-stack-xs)]">
           <Card.Title>Team Growth</Card.Title>
-          <Card.Description>Cumulative headcount · {range}</Card.Description>
+          <Card.Description className={CHART_DESCRIPTION}>
+            Cumulative headcount · {range}
+          </Card.Description>
         </div>
         <div className="flex shrink-0 items-start gap-[var(--space-6)]">
           <Select.Root
@@ -204,7 +208,7 @@ export function TenureCard() {
       <Card.Header className={HEADER_ROW}>
         <div className="flex min-w-0 flex-col gap-[var(--space-stack-xs)]">
           <Card.Title>Tenure Avg</Card.Title>
-          <Card.Description>
+          <Card.Description className={CHART_DESCRIPTION}>
             Distribution of months on the team
           </Card.Description>
         </div>
@@ -250,7 +254,9 @@ export function AttritionCard() {
       <Card.Header className={HEADER_ROW}>
         <div className="flex min-w-0 flex-col gap-[var(--space-stack-xs)]">
           <Card.Title>Attrition</Card.Title>
-          <Card.Description>Monthly departures over time</Card.Description>
+          <Card.Description className={CHART_DESCRIPTION}>
+            Monthly departures over time
+          </Card.Description>
         </div>
         <HeaderMetric
           value={`${total} (${Math.round(ATTRITION_RATE * 100)}%)`}

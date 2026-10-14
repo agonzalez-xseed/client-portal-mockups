@@ -16,10 +16,17 @@ import {
   PageHeaderPerson,
   PageHeaderTitle,
   useMenuBar,
+  type PageHeaderPersonProps,
 } from "@xseeduy/ui/main";
 import { USER_TIMEZONES, type UserTimezone } from "@/lib/team";
 import { UserTimezoneProvider, useUserTimezone } from "@/lib/user-timezone";
-import { PORTAL_NAV, titleForPath } from "./portal-nav";
+import { BottomNav } from "./bottom-nav";
+import {
+  PORTAL_ANNOUNCEMENT,
+  PORTAL_NAV,
+  isNavActive,
+  titleForPath,
+} from "./portal-nav";
 
 const PORTAL_USER = {
   name: "Alex Stone",
@@ -39,32 +46,32 @@ function AccountMenu() {
       ? theme
       : "system";
 
-  return (
-    <PageHeaderPerson
-      avatar={
-        <Avatar
-          size="sm"
-          shape="square"
-          src={PORTAL_USER.avatarSrc}
-          alt={PORTAL_USER.name}
-          initials={PORTAL_USER.initials}
-        />
-      }
-      name={PORTAL_USER.name}
-      role={PORTAL_USER.role}
-      showTimezone
-      timezone={zone}
-      onTimezoneChange={(value) => {
-        if (isUserTimezone(value)) setZone(value);
-      }}
-      showMode
-      mode={mode}
-      onModeChange={setTheme}
-      onLogout={() => {
-        // Mock portal — logout is inert for now.
-      }}
-    />
-  );
+  const props: PageHeaderPersonProps = {
+    avatar: (
+      <Avatar
+        size="sm"
+        shape="square"
+        src={PORTAL_USER.avatarSrc}
+        alt={PORTAL_USER.name}
+        initials={PORTAL_USER.initials}
+      />
+    ),
+    name: PORTAL_USER.name,
+    role: PORTAL_USER.role,
+    showTimezone: true,
+    timezone: zone,
+    onTimezoneChange: (value) => {
+      if (isUserTimezone(value)) setZone(value);
+    },
+    showMode: true,
+    mode,
+    onModeChange: setTheme,
+    onLogout: () => {
+      // Mock portal — logout is inert for now.
+    },
+  };
+
+  return <PageHeaderPerson {...props} />;
 }
 
 const NAV_ICONS = {
@@ -100,26 +107,23 @@ export function PortalShell({ children }: { children: React.ReactNode }) {
     <UserTimezoneProvider>
       <div className="flex h-full min-h-0">
         <MenuBar
-          className="shrink-0"
-          announcement={{
-            variant: "sun",
-            action: false,
-          }}
+          className="shrink-0 max-md:hidden"
+          announcement={
+            PORTAL_ANNOUNCEMENT ? { ...PORTAL_ANNOUNCEMENT, action: false } : false
+          }
         >
           <BrandHeader />
           <MenuBar.Content>
             <MenuBar.Group>
               {PORTAL_NAV.map((item) => {
                 const Icon = NAV_ICONS[item.icon];
-                const active =
-                  pathname === item.href || pathname.startsWith(`${item.href}/`);
 
                 return (
                   <MenuBar.Item
                     key={item.href}
                     render={<Link href={item.href} />}
                     icon={<Icon weight="duotone" />}
-                    active={active}
+                    active={isNavActive(pathname, item.href)}
                   >
                     {item.label}
                   </MenuBar.Item>
@@ -136,12 +140,31 @@ export function PortalShell({ children }: { children: React.ReactNode }) {
           </PageHeader>
           <div
             key={pathname}
-            className="page-enter min-h-0 flex-1 overflow-y-auto bg-surface-page p-[var(--space-inset-xl)]"
+            className="page-enter min-h-0 flex-1 overflow-y-auto bg-surface-page p-[var(--space-inset-xl)] max-md:p-[var(--space-inset-lg)] max-md:pb-[calc(var(--space-80)+var(--space-inset-lg)+env(safe-area-inset-bottom))]"
           >
             {children}
           </div>
         </div>
       </div>
+
+      <BottomNav aria-label="Primary" className="md:hidden">
+        {PORTAL_NAV.map((item) => {
+          const Icon = NAV_ICONS[item.icon];
+          const active = isNavActive(pathname, item.href);
+
+          return (
+            <BottomNav.Item
+              key={item.href}
+              render={<Link href={item.href} />}
+              icon={<Icon weight={active ? "fill" : "duotone"} />}
+              active={active}
+              tone={item.tone}
+            >
+              {item.label}
+            </BottomNav.Item>
+          );
+        })}
+      </BottomNav>
     </UserTimezoneProvider>
   );
 }

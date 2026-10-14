@@ -1,12 +1,10 @@
 "use client";
 
-import {
-  DownloadSimpleIcon,
-  EyeIcon,
-  FilePdfIcon,
-} from "@xseeduy/icons";
-import { DataTable, Table, type DataTableColumn } from "@xseeduy/ui/main";
+import { FilePdfIcon } from "@xseeduy/icons";
+import { DataTable, type DataTableColumn } from "@xseeduy/ui/main";
 import { cn } from "@xseeduy/ui/utils";
+import { DocumentRowActions } from "@/components/document-row-actions";
+import { MobileDataCards } from "@/components/mobile-data-cards";
 import type { DocumentRow } from "@/lib/documents";
 /**
  * Follows core-ui DataTable column patterns (see Data Table docs / stories):
@@ -71,31 +69,7 @@ const buildColumns = (
     fitContent: true,
     hideable: false,
     searchable: false,
-    cell: (row) => (
-      <Table.RowActions
-        onClick={(event) => event.stopPropagation()}
-        onKeyDown={(event) => event.stopPropagation()}
-      >
-        <Table.RowAction
-          tone="tertiary"
-          aria-label={`View ${row.name}`}
-          onClick={(event) => {
-            event.preventDefault();
-          }}
-        >
-          <EyeIcon weight="duotone" aria-hidden />
-        </Table.RowAction>
-        <Table.RowAction
-          tone="tertiary"
-          aria-label={`Download ${row.name}`}
-          onClick={(event) => {
-            event.preventDefault();
-          }}
-        >
-          <DownloadSimpleIcon weight="duotone" aria-hidden />
-        </Table.RowAction>
-      </Table.RowActions>
-    ),
+    cell: (row) => <DocumentRowActions name={row.name} />,
   },
 ];
 
@@ -130,7 +104,7 @@ export function DocumentsTable({
           <p className="text-body-md text-text-secondary">{description}</p>
         )}
       </div>
-      <DataTable
+      <MobileDataCards
         data={data}
         columns={meta === "date" ? DATE_COLUMNS : CATEGORY_COLUMNS}
         defaultSort={
@@ -138,8 +112,19 @@ export function DocumentsTable({
         }
         getRowId={(row) => row.id}
         searchPlaceholder="Search documents..."
-        defaultPageSize={10}
       />
+      <div className="hidden md:block">
+        <DataTable
+          data={data}
+          columns={meta === "date" ? DATE_COLUMNS : CATEGORY_COLUMNS}
+          defaultSort={
+            meta === "date" ? { columnId: "date", direction: "desc" } : null
+          }
+          getRowId={(row) => row.id}
+          searchPlaceholder="Search documents..."
+          defaultPageSize={10}
+        />
+      </div>
     </section>
   );
 }

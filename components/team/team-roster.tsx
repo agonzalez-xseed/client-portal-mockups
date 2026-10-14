@@ -12,6 +12,7 @@ import {
   type DataTableColumn,
 } from "@xseeduy/ui/main";
 import { CountryFlag } from "@/components/country-flag";
+import { MobileDataCards } from "@/components/mobile-data-cards";
 import {
   formatRate,
   formatTimeShift,
@@ -118,13 +119,21 @@ export function TeamRoster({ members }: { members: TeamRosterMember[] }) {
         </Tabs.List>
       </div>
       <Tabs.Content value="table">
-        <DataTable
+        <MobileDataCards
           data={members}
           columns={columns}
           getRowId={(row) => row.id}
           searchPlaceholder="Search team..."
-          defaultPageSize={10}
         />
+        <div className="hidden md:block">
+          <DataTable
+            data={members}
+            columns={columns}
+            getRowId={(row) => row.id}
+            searchPlaceholder="Search team..."
+            defaultPageSize={10}
+          />
+        </div>
       </Tabs.Content>
       <Tabs.Content value="grid">
         <ul className="grid grid-cols-1 gap-[var(--space-stack-md)] md:grid-cols-2 xl:grid-cols-3">

@@ -2,8 +2,6 @@
 
 import {
   AirplaneTiltIcon,
-  DownloadSimpleIcon,
-  EyeIcon,
   FilePdfIcon,
   FilesIcon,
   UserCircleIcon,
@@ -17,13 +15,14 @@ import {
 } from "@xseeduy/ui/base";
 import {
   DataTable,
-  Table,
   TeamMap,
   type DataTableColumn,
   type TeamMapMember,
   type SubteamPerson,
 } from "@xseeduy/ui/main";
 import { SUBTLE_DOTS } from "@xseeduy/ui/utils";
+import { DocumentRowActions } from "@/components/document-row-actions";
+import { MobileDataCards } from "@/components/mobile-data-cards";
 import { formatPtoRange, type PtoRecord, type PtoStatus } from "@/lib/team";
 
 type DocumentRecord = { id: string; document: string; type: string; uploaded: string };
@@ -64,31 +63,7 @@ const DOCUMENT_COLUMNS: DataTableColumn<DocumentRecord>[] = [
     fitContent: true,
     hideable: false,
     searchable: false,
-    cell: (row) => (
-      <Table.RowActions
-        onClick={(event) => event.stopPropagation()}
-        onKeyDown={(event) => event.stopPropagation()}
-      >
-        <Table.RowAction
-          tone="tertiary"
-          aria-label={`View ${row.document}`}
-          onClick={(event) => {
-            event.preventDefault();
-          }}
-        >
-          <EyeIcon weight="duotone" aria-hidden />
-        </Table.RowAction>
-        <Table.RowAction
-          tone="tertiary"
-          aria-label={`Download ${row.document}`}
-          onClick={(event) => {
-            event.preventDefault();
-          }}
-        >
-          <DownloadSimpleIcon weight="duotone" aria-hidden />
-        </Table.RowAction>
-      </Table.RowActions>
-    ),
+    cell: (row) => <DocumentRowActions name={row.document} />,
   },
 ];
 
@@ -211,15 +186,25 @@ export function MemberReportsTo({
 }) {
   return (
     <RecordSection title="Reports to" icon={<UserCircleIcon weight="duotone" />}>
-      <DataTable
+      <MobileDataCards
         data={[{ ...manager, subteam }]}
         columns={REPORTS_TO_COLUMNS}
         getRowId={(row) => row.id}
         searchable={false}
         paginated={false}
-        columnsMenu={false}
-        frameClassName={FLAT_FRAME}
+        framed={false}
       />
+      <div className="hidden md:block">
+        <DataTable
+          data={[{ ...manager, subteam }]}
+          columns={REPORTS_TO_COLUMNS}
+          getRowId={(row) => row.id}
+          searchable={false}
+          paginated={false}
+          columnsMenu={false}
+          frameClassName={FLAT_FRAME}
+        />
+      </div>
     </RecordSection>
   );
 }
@@ -244,16 +229,27 @@ export function MemberDocuments({
 
   return (
     <RecordSection title="Documents" icon={<FilesIcon weight="duotone" />}>
-      <DataTable
+      <MobileDataCards
         data={documents}
         columns={DOCUMENT_COLUMNS}
         getRowId={(row) => row.id}
         searchable={false}
         paginated={false}
-        columnsMenu={false}
-        frameClassName={FLAT_FRAME}
+        framed={false}
         empty={<DataState size="sm" title="No documents on file." />}
       />
+      <div className="hidden md:block">
+        <DataTable
+          data={documents}
+          columns={DOCUMENT_COLUMNS}
+          getRowId={(row) => row.id}
+          searchable={false}
+          paginated={false}
+          columnsMenu={false}
+          frameClassName={FLAT_FRAME}
+          empty={<DataState size="sm" title="No documents on file." />}
+        />
+      </div>
     </RecordSection>
   );
 }
@@ -261,16 +257,27 @@ export function MemberDocuments({
 export function MemberPto({ records }: { records: PtoRecord[] }) {
   return (
     <RecordSection title="PTO" icon={<AirplaneTiltIcon weight="duotone" />}>
-      <DataTable
+      <MobileDataCards
         data={records}
         columns={PTO_COLUMNS}
         getRowId={(row) => row.id}
         searchable={false}
         paginated={false}
-        columnsMenu={false}
-        frameClassName={FLAT_FRAME}
+        framed={false}
         empty={<DataState size="sm" title="No time off taken yet." />}
       />
+      <div className="hidden md:block">
+        <DataTable
+          data={records}
+          columns={PTO_COLUMNS}
+          getRowId={(row) => row.id}
+          searchable={false}
+          paginated={false}
+          columnsMenu={false}
+          frameClassName={FLAT_FRAME}
+          empty={<DataState size="sm" title="No time off taken yet." />}
+        />
+      </div>
     </RecordSection>
   );
 }
