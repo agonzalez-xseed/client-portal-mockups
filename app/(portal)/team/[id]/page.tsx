@@ -7,9 +7,8 @@ import {
   GlobeHemisphereWestIcon,
   UsersThreeIcon,
 } from "@xseeduy/icons/ssr";
-import { Avatar, Button } from "@xseeduy/ui/base";
-import { MetricCard } from "@/components/metric-card";
-import { CountryFlag } from "@/components/country-flag";
+import { Avatar, Button, CountryFlag } from "@xseeduy/ui/base";
+import { MetricCard, ProfileHeader } from "@xseeduy/ui/main";
 import {
   MemberDocuments,
   MemberLocation,
@@ -43,8 +42,9 @@ export default async function TeamMemberPage({
 
   return (
     <div className="flex flex-col gap-[var(--space-stack-md)]">
-      <header className="-mx-[var(--space-inset-xl)] -mt-[var(--space-inset-xl)] flex flex-col">
-        <div className="h-[var(--space-112)] bg-surface-muted p-[var(--space-inset-xl)]">
+      <ProfileHeader
+        className="-mx-[var(--space-inset-xl)] -mt-[var(--space-inset-xl)]"
+        action={
           <Button
             tone="utility"
             size="sm"
@@ -54,30 +54,27 @@ export default async function TeamMemberPage({
             <ArrowLeftIcon aria-hidden />
             Back to team
           </Button>
-        </div>
-        <div className="flex flex-col gap-[var(--space-stack-md)] px-[var(--space-inset-xl)]">
+        }
+        avatar={
           <Avatar
             size="xl"
             shape="square"
             src={member.avatarSrc}
             alt={member.name}
-            className="-mt-[var(--space-32)]"
           />
-          <div className="flex min-w-0 flex-col gap-[var(--space-stack-xs)]">
-            <div className="flex flex-wrap items-center gap-[var(--space-inline-sm)]">
-              <h2 className="text-h3 text-text-primary">{member.name}</h2>
-              <MemberStatusBadge status={member.contract} />
-            </div>
-            <p className="flex flex-wrap items-center gap-[var(--space-inline-xs)] text-body-md text-text-secondary">
-              {member.role} ·
-              <CountryFlag code={member.countryCode} />
-              <span className="text-text-primary">
-                {member.city}, {member.country}
-              </span>
-            </p>
-          </div>
-        </div>
-      </header>
+        }
+        name={member.name}
+        badge={<MemberStatusBadge status={member.contract} />}
+        meta={
+          <>
+            {member.role} ·
+            <CountryFlag code={member.countryCode} />
+            <span className="text-text-primary">
+              {member.city}, {member.country}
+            </span>
+          </>
+        }
+      />
 
       <div className="grid grid-cols-1 gap-[var(--space-stack-md)] md:grid-cols-2 xl:grid-cols-4">
         <MetricCard

@@ -3,19 +3,14 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { ArrowRightIcon, SquaresFourIcon, TableIcon } from "@xseeduy/icons";
-import { Avatar, Badge, Button } from "@xseeduy/ui/base";
+import { Avatar, Badge, Button, CountryFlag } from "@xseeduy/ui/base";
 import {
   DataTable,
   STATUS_TONE,
   Tabs,
   TeamMemberCard,
+  type DataTableColumn,
 } from "@xseeduy/ui/main";
-import { CountryFlag } from "@/components/country-flag";
-import {
-  MobileDataCards,
-  desktopColumns,
-  type MobileDataTableColumn,
-} from "@/components/mobile-data-cards";
 import {
   formatRate,
   formatTimeShift,
@@ -27,7 +22,7 @@ import { useUserTimezone } from "@/lib/user-timezone";
 
 const buildColumns = (
   zone: UserTimezone,
-): MobileDataTableColumn<TeamRosterMember>[] => [
+): DataTableColumn<TeamRosterMember>[] => [
   {
     id: "member",
     header: "Member",
@@ -131,7 +126,6 @@ const buildColumns = (
 export function TeamRoster({ members }: { members: TeamRosterMember[] }) {
   const { zone } = useUserTimezone();
   const columns = useMemo(() => buildColumns(zone), [zone]);
-  const tableColumns = useMemo(() => desktopColumns(columns), [columns]);
 
   return (
     <Tabs defaultValue="table" size="sm" className="pt-[var(--space-32)]">
@@ -147,21 +141,14 @@ export function TeamRoster({ members }: { members: TeamRosterMember[] }) {
         </Tabs.List>
       </div>
       <Tabs.Content value="table">
-        <MobileDataCards
+        <DataTable
           data={members}
           columns={columns}
           getRowId={(row) => row.id}
           searchPlaceholder="Search team..."
+          defaultPageSize={10}
+          className="max-md:overflow-hidden"
         />
-        <div className="hidden md:block">
-          <DataTable
-            data={members}
-            columns={tableColumns}
-            getRowId={(row) => row.id}
-            searchPlaceholder="Search team..."
-            defaultPageSize={10}
-          />
-        </div>
       </Tabs.Content>
       <Tabs.Content value="grid">
         <ul className="grid grid-cols-1 gap-[var(--space-stack-md)] md:grid-cols-2 xl:grid-cols-3">

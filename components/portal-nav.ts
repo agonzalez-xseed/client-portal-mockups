@@ -1,5 +1,5 @@
-import type { MenuBarAnnouncementVariant } from "@xseeduy/ui/base";
-import type { BottomNavTone } from "./bottom-nav";
+import type { AnnouncementVariant } from "@xseeduy/ui/base";
+import type { BottomNavTone } from "@xseeduy/ui/main";
 
 export type PortalNavItem = {
   href: string;
@@ -17,7 +17,7 @@ export const PORTAL_NAV: PortalNavItem[] = [
 ];
 
 export type PortalAnnouncement = {
-  variant: MenuBarAnnouncementVariant;
+  variant: AnnouncementVariant;
   eyebrow: string;
   title: string;
   description: string;

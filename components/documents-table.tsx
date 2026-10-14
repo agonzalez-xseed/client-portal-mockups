@@ -4,7 +4,6 @@ import { FilePdfIcon } from "@xseeduy/icons";
 import { DataTable, type DataTableColumn } from "@xseeduy/ui/main";
 import { cn } from "@xseeduy/ui/utils";
 import { DocumentRowActions } from "@/components/document-row-actions";
-import { MobileDataCards } from "@/components/mobile-data-cards";
 import type { DocumentRow } from "@/lib/documents";
 /**
  * Follows core-ui DataTable column patterns (see Data Table docs / stories):
@@ -17,6 +16,7 @@ const categoryColumn: DataTableColumn<DocumentRow> = {
   header: "Category",
   accessor: (row) => row.category ?? "",
   sortable: true,
+  hideOnMobile: true,
   cell: (row) => <span className="text-text-secondary">{row.category}</span>,
 };
 
@@ -25,6 +25,7 @@ const dateColumn: DataTableColumn<DocumentRow> = {
   header: "Date",
   accessor: (row) => row.dateIso ?? "",
   sortable: true,
+  hideOnMobile: true,
   cell: (row) => <span className="text-text-secondary">{row.date}</span>,
 };
 
@@ -53,6 +54,7 @@ const buildColumns = (
     header: "Type",
     accessor: (row) => row.type,
     sortable: true,
+    hideOnMobile: true,
     cell: (row) => <span className="text-text-secondary">{row.type}</span>,
   },
   {
@@ -60,6 +62,7 @@ const buildColumns = (
     header: "Size",
     accessor: (row) => row.sizeBytes,
     sortable: true,
+    hideOnMobile: true,
     cell: (row) => <span className="text-text-secondary">{row.size}</span>,
   },
   {
@@ -72,6 +75,12 @@ const buildColumns = (
     cell: (row) => <DocumentRowActions name={row.name} />,
   },
 ];
+
+/**
+ * Override until core-ui fixes it: on mobile the cards' square body paints
+ * over the panel's rounded corners, so clip it to the panel.
+ */
+const MOBILE_CARDS_CLIP = "max-md:overflow-hidden";
 
 const CATEGORY_COLUMNS = buildColumns(categoryColumn);
 const DATE_COLUMNS = buildColumns(dateColumn);
@@ -104,7 +113,7 @@ export function DocumentsTable({
           <p className="text-body-md text-text-secondary">{description}</p>
         )}
       </div>
-      <MobileDataCards
+      <DataTable
         data={data}
         columns={meta === "date" ? DATE_COLUMNS : CATEGORY_COLUMNS}
         defaultSort={
@@ -112,19 +121,9 @@ export function DocumentsTable({
         }
         getRowId={(row) => row.id}
         searchPlaceholder="Search documents..."
+        defaultPageSize={10}
+        className={MOBILE_CARDS_CLIP}
       />
-      <div className="hidden md:block">
-        <DataTable
-          data={data}
-          columns={meta === "date" ? DATE_COLUMNS : CATEGORY_COLUMNS}
-          defaultSort={
-            meta === "date" ? { columnId: "date", direction: "desc" } : null
-          }
-          getRowId={(row) => row.id}
-          searchPlaceholder="Search documents..."
-          defaultPageSize={10}
-        />
-      </div>
     </section>
   );
 }

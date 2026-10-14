@@ -10,6 +10,8 @@ import {
   Avatar,
   Badge,
   DataState,
+  EYEBROW_TEXT,
+  SurfaceEyebrow,
   SurfaceFrame,
   type BadgeProps,
 } from "@xseeduy/ui/base";
@@ -20,9 +22,7 @@ import {
   type TeamMapMember,
   type SubteamPerson,
 } from "@xseeduy/ui/main";
-import { SUBTLE_DOTS } from "@xseeduy/ui/utils";
 import { DocumentRowActions } from "@/components/document-row-actions";
-import { MobileDataCards } from "@/components/mobile-data-cards";
 import { formatPtoRange, type PtoRecord, type PtoStatus } from "@/lib/team";
 
 type DocumentRecord = { id: string; document: string; type: string; uploaded: string };
@@ -140,12 +140,7 @@ const REPORTS_TO_COLUMNS: DataTableColumn<ReportsToRecord>[] = [
   },
 ];
 
-/** Flattens DataTable's own frame so the surrounding RecordSection frame is the only one. */
-const FLAT_FRAME = "rounded-none border-0 bg-transparent p-0";
-/** One dark panel holding the table, so the dotted frame is its only container. */
-const TABLE_PANEL =
-  "bg-surface-default p-0 [&_[data-slot=table-body]]:rounded-none [&_[data-slot=table-body]]:border-0 [&_[data-slot=table-body]]:bg-transparent";
-/** Local copy of core-ui's SurfaceEyebrow (not exported), as used by SubteamCard. */
+/** Dotted frame with an eyebrow title, as SubteamCard. Holds one embedded DataTable. */
 function RecordSection({
   title,
   icon,
@@ -156,18 +151,10 @@ function RecordSection({
   children: React.ReactNode;
 }) {
   return (
-    <SurfaceFrame className={`gap-[var(--space-6)] ${SUBTLE_DOTS}`}>
-      <div className="flex items-center gap-[var(--space-inline-sm)] px-[var(--space-6)] pt-[var(--space-4)]">
-        <span
-          aria-hidden
-          className="flex size-[var(--icon-sm)] shrink-0 items-center justify-center text-text-secondary [&_svg]:size-full"
-        >
-          {icon}
-        </span>
-        <h2 className="min-w-0 truncate text-body-md text-text-secondary">
-          {title}
-        </h2>
-      </div>
+    <SurfaceFrame texture="dots" className="gap-[var(--space-6)]">
+      <SurfaceEyebrow icon={icon} iconClassName="text-text-secondary">
+        <h2 className={EYEBROW_TEXT}>{title}</h2>
+      </SurfaceEyebrow>
       {children}
     </SurfaceFrame>
   );
@@ -190,26 +177,15 @@ export function MemberReportsTo({
 }) {
   return (
     <RecordSection title="Reports to" icon={<UserCircleIcon weight="duotone" />}>
-      <MobileDataCards
+      <DataTable
         data={[{ ...manager, subteam }]}
         columns={REPORTS_TO_COLUMNS}
         getRowId={(row) => row.id}
         searchable={false}
         paginated={false}
-        framed={false}
+        columnsMenu={false}
+        variant="embedded"
       />
-      <div className="hidden md:block">
-        <DataTable
-          data={[{ ...manager, subteam }]}
-          columns={REPORTS_TO_COLUMNS}
-          getRowId={(row) => row.id}
-          searchable={false}
-          paginated={false}
-          columnsMenu={false}
-          frameClassName={FLAT_FRAME}
-          className={TABLE_PANEL}
-        />
-      </div>
     </RecordSection>
   );
 }
@@ -234,28 +210,16 @@ export function MemberDocuments({
 
   return (
     <RecordSection title="Documents" icon={<FilesIcon weight="duotone" />}>
-      <MobileDataCards
+      <DataTable
         data={documents}
         columns={DOCUMENT_COLUMNS}
         getRowId={(row) => row.id}
         searchable={false}
         paginated={false}
-        framed={false}
+        columnsMenu={false}
+        variant="embedded"
         empty={<DataState size="sm" title="No documents on file." />}
       />
-      <div className="hidden md:block">
-        <DataTable
-          data={documents}
-          columns={DOCUMENT_COLUMNS}
-          getRowId={(row) => row.id}
-          searchable={false}
-          paginated={false}
-          columnsMenu={false}
-          frameClassName={FLAT_FRAME}
-          className={TABLE_PANEL}
-          empty={<DataState size="sm" title="No documents on file." />}
-        />
-      </div>
     </RecordSection>
   );
 }
@@ -263,28 +227,16 @@ export function MemberDocuments({
 export function MemberPto({ records }: { records: PtoRecord[] }) {
   return (
     <RecordSection title="PTO" icon={<AirplaneTiltIcon weight="duotone" />}>
-      <MobileDataCards
+      <DataTable
         data={records}
         columns={PTO_COLUMNS}
         getRowId={(row) => row.id}
         searchable={false}
         paginated={false}
-        framed={false}
+        columnsMenu={false}
+        variant="embedded"
         empty={<DataState size="sm" title="No time off taken yet." />}
       />
-      <div className="hidden md:block">
-        <DataTable
-          data={records}
-          columns={PTO_COLUMNS}
-          getRowId={(row) => row.id}
-          searchable={false}
-          paginated={false}
-          columnsMenu={false}
-          frameClassName={FLAT_FRAME}
-          className={TABLE_PANEL}
-          empty={<DataState size="sm" title="No time off taken yet." />}
-        />
-      </div>
     </RecordSection>
   );
 }

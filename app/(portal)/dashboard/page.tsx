@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { CloudIcon, CodeIcon, PaletteIcon } from "@xseeduy/icons/ssr";
+import { AnnouncementBanner } from "@xseeduy/ui/base";
 import { SubteamCard } from "@xseeduy/ui/main";
-import { AnnouncementBanner } from "@/components/announcement-banner";
 import { PORTAL_ANNOUNCEMENT } from "@/components/portal-nav";
 import {
   AttritionCard,
