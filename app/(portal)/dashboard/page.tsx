@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import { CloudIcon, CodeIcon, PaletteIcon } from "@xseeduy/icons/ssr";
-import { AnnouncementBanner } from "@xseeduy/ui/base";
 import { SubteamCard } from "@xseeduy/ui/main";
 import { PORTAL_ANNOUNCEMENT } from "@/components/portal-nav";
+import { DashboardAnnouncement } from "@/components/dashboard/dashboard-announcement";
 import {
   AttritionCard,
   LocationCard,
@@ -21,7 +21,7 @@ export default function DashboardPage() {
   return (
     <div className="flex flex-col gap-[var(--space-stack-md)]">
       {PORTAL_ANNOUNCEMENT && (
-        <AnnouncementBanner {...PORTAL_ANNOUNCEMENT} className="md:hidden" />
+        <DashboardAnnouncement announcement={PORTAL_ANNOUNCEMENT} />
       )}
       <TeamGrowthCard />
       <div className="grid grid-cols-1 gap-[var(--space-stack-md)] lg:grid-cols-2">
