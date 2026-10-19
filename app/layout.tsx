@@ -27,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${poppins.variable} h-full`} suppressHydrationWarning>
-      <body className="h-full bg-surface-page text-text-primary antialiased">
+      <body className="h-full bg-surface-page text-text-primary">
         <ThemeProvider>
           <IconProvider>{children}</IconProvider>
         </ThemeProvider>
