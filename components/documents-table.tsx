@@ -62,6 +62,7 @@ const buildColumns = (
     header: "Size",
     accessor: (row) => row.sizeBytes,
     sortable: true,
+    align: "numeric",
     hideOnMobile: true,
     cell: (row) => <span className="text-text-secondary">{row.size}</span>,
   },

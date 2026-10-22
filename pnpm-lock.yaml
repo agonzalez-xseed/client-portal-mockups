@@ -12,11 +12,11 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@xseeduy/tokens':
-        specifier: ^2.5.0
-        version: 2.5.0
+        specifier: ^2.7.0
+        version: 2.7.0
       '@xseeduy/ui':
-        specifier: ^1.34.1
-        version: 1.34.1(@types/react@19.3.0)(prop-types@15.8.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(recharts@3.8.0(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react-is@16.13.1)(react@19.2.8)(redux@5.0.1))
+        specifier: ^1.35.0
+        version: 1.35.0(@types/react@19.3.0)(prop-types@15.8.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(recharts@3.8.0(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react-is@16.13.1)(react@19.2.8)(redux@5.0.1))
       next:
         specifier: 16.3.6
         version: 16.3.6(@babel/core@7.29.7)(@types/node@20.19.43)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -899,11 +899,11 @@ packages:
       react: '>=18'
       react-dom: '>=18'
 
-  '@xseeduy/tokens@2.5.0':
-    resolution: {integrity: sha512-zHd+zmA3pqRpki2XqTemTBsDU0HGW48GjCWCwwxoRDat0RccGtG4I5LFBsB8TiAJdCIHFQX+jEm+k65ufdcoxQ==, tarball: https://npm.pkg.github.com/download/@xseeduy/tokens/2.5.0/6df678aa9cd1b3901533934c3a9dec2ad816c8ce}
+  '@xseeduy/tokens@2.7.0':
+    resolution: {integrity: sha512-8VhyPo8ucAd2Anyk6SCLtnYkogBDnTionYRsc2H9wbskyuIQkHRRxK3NV8fX1PyHl5HDZevgcKoISBdgq6npVw==, tarball: https://npm.pkg.github.com/download/@xseeduy/tokens/2.7.0/b7c8e2b052ac52f4e91919ab84c87a04ce4ba1ab}
 
-  '@xseeduy/ui@1.34.1':
-    resolution: {integrity: sha512-bNtl7jLoWDUwRn2Y4LltBHFgfcf4ySWtCW/yuUWC07bBuXEPxDuy59wwO1TGURfDGV5+KrfOJQ0AlWUXSxFjDA==, tarball: https://npm.pkg.github.com/download/@xseeduy/ui/1.34.1/92e95850a6efd566e9de9daef1f4fc61f6854b35}
+  '@xseeduy/ui@1.35.0':
+    resolution: {integrity: sha512-RaDhVa+lel4rzzVKPQkKxoyW6152+UJdptFDWqgK9VHKl/A6+rs24ZG5nEpPaBQw6+y0dnfeP3zdBuH7nPJnQA==, tarball: https://npm.pkg.github.com/download/@xseeduy/ui/1.35.0/2d81f0082f4d42baf39ef0837219582f84cd322b}
     peerDependencies:
       react: '>=18'
       react-dom: '>=18'
@@ -3120,15 +3120,15 @@ snapshots:
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
 
-  '@xseeduy/tokens@2.5.0': {}
+  '@xseeduy/tokens@2.7.0': {}
 
-  '@xseeduy/ui@1.34.1(@types/react@19.3.0)(prop-types@15.8.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(recharts@3.8.0(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react-is@16.13.1)(react@19.2.8)(redux@5.0.1))':
+  '@xseeduy/ui@1.35.0(@types/react@19.3.0)(prop-types@15.8.1)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(recharts@3.8.0(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react-is@16.13.1)(react@19.2.8)(redux@5.0.1))':
     dependencies:
       '@base-ui/react': 1.8.0(@types/react@19.3.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@dnd-kit/helpers': 0.5.0
       '@dnd-kit/react': 0.5.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@xseeduy/icons': 1.1.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      '@xseeduy/tokens': 2.5.0
+      '@xseeduy/tokens': 2.7.0
       class-variance-authority: 0.7.1
       clsx: 2.1.1
       country-flag-icons: 1.6.20

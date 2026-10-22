@@ -90,6 +90,7 @@ const PTO_COLUMNS: DataTableColumn<PtoRecord>[] = [
     id: "days",
     header: "Days",
     accessor: (row) => row.days,
+    align: "numeric",
     cell: (row) => (
       <span className="text-text-secondary">
         {row.days} {row.days === 1 ? "day" : "days"}
