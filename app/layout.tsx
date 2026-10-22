@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Poppins } from "next/font/google";
+import { Geist, Poppins } from "next/font/google";
 import { IconProvider } from "@xseeduy/icons";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
@@ -8,6 +8,13 @@ const poppins = Poppins({
   variable: "--font-sans",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+});
+
+// `numeric` / `numeric-id` read --font-numeric-face. Poppins has no tabular figures.
+const geistNumeric = Geist({
+  variable: "--font-numeric-face",
+  subsets: ["latin"],
+  weight: "variable",
 });
 
 export const metadata: Metadata = {
@@ -26,8 +33,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${poppins.variable} h-full`} suppressHydrationWarning>
-      <body className="h-full bg-surface-page text-text-primary antialiased">
+    <html
+      lang="en"
+      className={`${poppins.variable} ${geistNumeric.variable} h-full`}
+      suppressHydrationWarning
+    >
+      <body className="h-full bg-surface-page text-text-primary">
         <ThemeProvider>
           <IconProvider>{children}</IconProvider>
         </ThemeProvider>

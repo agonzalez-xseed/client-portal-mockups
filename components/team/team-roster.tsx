@@ -87,7 +87,9 @@ const buildColumns = (
     accessor: (row) => utcOffset(row),
     sortable: true,
     cell: (row) => (
-      <span className="text-text-secondary">{formatTimeShift(row, zone)}</span>
+      <span className="numeric text-text-secondary">
+        {formatTimeShift(row, zone)}
+      </span>
     ),
   },
   {
@@ -95,7 +97,7 @@ const buildColumns = (
     header: "Rate",
     accessor: (row) => row.rate,
     sortable: true,
-    align: "end",
+    align: "numeric",
     hideOnMobile: true,
     cell: (row) => (
       <span className="text-text-secondary">{formatRate(row.rate)}</span>
@@ -160,9 +162,11 @@ export function TeamRoster({ members }: { members: TeamRosterMember[] }) {
                 role={member.role}
                 location={member.country}
                 flag={<CountryFlag code={member.countryCode} />}
-                timeShift={formatTimeShift(member, zone)}
+                timeShift={
+                  <span className="numeric">{formatTimeShift(member, zone)}</span>
+                }
                 since={member.since}
-                rate={formatRate(member.rate)}
+                rate={<span className="numeric">{formatRate(member.rate)}</span>}
                 status={member.contract}
                 avatarSrc={member.avatarSrc}
               />

@@ -81,6 +81,10 @@ const AXIS_PROPS = {
   tickMargin: 8,
 } as const;
 
+/** Y-axis counts. Tooltip values already use `numeric` inside ChartTooltipContent. */
+const CHART_CLASS =
+  "aspect-auto w-full [&_.recharts-yAxis-tick-labels_.recharts-cartesian-axis-tick-value]:numeric";
+
 const HEADER_ROW =
   "flex-row items-start justify-between gap-[var(--space-inline-md)] pt-[var(--space-8)] pr-[var(--space-8)]";
 
@@ -135,7 +139,7 @@ export function TeamGrowthCard() {
       <Card.Content className="pt-[var(--space-12)]">
         <ChartContainer
           config={growthConfig}
-          className="aspect-auto h-[13rem] w-full"
+          className={`${CHART_CLASS} h-[13rem]`}
         >
           <LineChart
             data={data}
@@ -199,7 +203,7 @@ export function TenureCard() {
       <Card.Content className="flex-1 pt-[var(--space-12)]">
         <ChartContainer
           config={tenureConfig}
-          className="aspect-auto h-[15rem] w-full"
+          className={`${CHART_CLASS} h-[15rem]`}
         >
           <BarChart
             data={TENURE_BUCKETS}
@@ -248,7 +252,7 @@ export function AttritionCard() {
       <Card.Content className="flex-1 pt-[var(--space-12)]">
         <ChartContainer
           config={attritionConfig}
-          className="aspect-auto h-[15rem] w-full"
+          className={`${CHART_CLASS} h-[15rem]`}
         >
           <BarChart
             data={DEPARTURES}
@@ -329,7 +333,7 @@ export function LocationCard({
             >
               {index > 0 && <span aria-hidden>·</span>}
               {code && <CountryFlag code={code} />}
-              {country} {count}
+              {country} <span className="numeric">{count}</span>
             </span>
           ))}
         </Card.Description>
